@@ -1,4 +1,4 @@
-﻿# Traversal Value Application
+﻿# DSA Using JavaScript
 
 A simple web application to interact with an array by fetching its elements based on user-provided indices. This project demonstrates basic JavaScript logic, DOM manipulation, and CSS animations for a responsive and visually appealing interface.
 
