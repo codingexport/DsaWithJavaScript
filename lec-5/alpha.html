@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching Item in Array</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #005050b0;
+        }
+
+        .array-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px;
+        }
+
+        .array-item {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-color: #fff;
+            font-size: 18px;
+            transition: background-color 0.5s, transform 0.3s;
+        }
+
+        .array-item.highlight {
+            background-color: #90ee90;
+            transform: scale(1.2);
+        }
+
+        .controls {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 150px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        p {
+            color: #0720dd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Enter letter or number to search" />
+        <button onclick="startSearch()">Search</button>
+    </div>
+    <div class="array-container" id="arrayContainer"></div>
+    <div id="result"></div>
+
+    <script>
+        const data = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 1, 2, 3, 4, 5]; // Mixed array
+        const arrayContainer = document.getElementById('arrayContainer');
+        const resultDiv = document.getElementById('result');
+
+        // Render the array items
+        const renderArray = () => {
+            arrayContainer.innerHTML = ''; // Clear any previous items
+            data.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'array-item';
+                div.textContent = item;
+                div.dataset.index = index; // Store the index for reference
+                arrayContainer.appendChild(div);
+            });
+        };
+
+        renderArray();
+
+        // Search item functionality
+        const startSearch = () => {
+            const input = document.getElementById('searchInput');
+            const itemToSearch = input.value.trim();
+            if (itemToSearch === '') {
+                resultDiv.textContent = 'Please enter a valid letter or number.';
+                return;
+            }
+
+            const arrayItems = document.querySelectorAll('.array-item');
+            let foundIndex = -1;
+
+            const searchItem = (index = 0) => {
+                if (index >= data.length) {
+                    resultDiv.innerHTML = foundIndex >= 0
+                        ? `<p>Item found at index: ${foundIndex}</p>`
+                        : `<p>Item not found.</p>`;
+                    return;
+                }
+
+                const currentItem = arrayItems[index];
+                currentItem.classList.add('highlight');
+
+                setTimeout(() => {
+                    currentItem.classList.remove('highlight');
+
+                    if (data[index].toString().toLowerCase() === itemToSearch.toLowerCase() && foundIndex === -1) {
+                        foundIndex = index;
+                        resultDiv.innerHTML = `<p>Item found at index: ${foundIndex}</p>`;
+                    } else {
+                        searchItem(index + 1);
+                    }
+                }, 500);
+            };
+
+            searchItem();
+        };
+    </script>
+</body>
+
+</html>
